@@ -37,7 +37,11 @@ def nueva_transaccion():
                 return "error de la api"
             else:
                 formulario_datos=request.form
-                if dbmanager.crypto_monedero(formulario_datos["moneda_inicial"])<float(formulario_datos["moneda_inicial_Q"]) and formulario_datos["moneda_inicial"] !="EUR":
+                cantidad_inicio=request.form["moneda_inicial_Q"]
+                cantidad_inicio=float(cantidad_inicio)
+                cantidad_disponible=dbmanager.crypto_monedero(formulario_datos["moneda_inicial"])
+                cantidad_disponible=float(cantidad_disponible)
+                if cantidad_disponible < cantidad_inicio and formulario_datos["moneda_inicial"] !="EUR":
                     return "no tienes cryptomonedas suficientes"
                 else: 
                     cantidad_2=api.compara(formulario_datos["moneda_inicial_Q"],formulario_datos["moneda_inicial"],formulario_datos["moneda_final"])
@@ -50,14 +54,10 @@ def nueva_transaccion():
         if formulario.validate_on_submit():
             formulario_datos=request.form
             dbmanager.escribebase(formulario_datos)
-            dbmanager.escribe_monedero(formulario_datos["moneda_final_Q"],formulario_datos["moneda_final"])
+            dbmanager.suma_monedero(formulario_datos["moneda_final_Q"],formulario_datos["moneda_final"])
+            if formulario_datos["moneda_inicial"] != "EUR":
+                dbmanager.sustrae_monedero(formulario_datos["moneda_inicial_Q"],formulario_datos["moneda_inicial"])
             return redirect(url_for("inicio"))
-
-
-
-
-
-
 
 
 

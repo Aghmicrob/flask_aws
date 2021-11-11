@@ -35,6 +35,11 @@ class Dbmanager():
             SET "cantidad" = cantidad + {}
             WHERE "cryptomoneda" is "{}";
         """
+        self.retira_monedero="""
+        UPDATE monedero
+            SET "cantidad" = cantidad - {}
+            WHERE "cryptomoneda" is "{}";
+        """
     def registro(self):
         try: 
             sqlite3.connect(self.FICHERO)
@@ -77,12 +82,18 @@ class Dbmanager():
         cur.execute(self.inserta,params)
         conn.commit()
         conn.close()
-    def escribe_monedero(self,moneda2Q,moneda2):
+    def suma_monedero(self,moneda2Q,moneda2):
         conn = sqlite3.connect(self.FICHERO)
         cur = conn.cursor()
         cur.execute(self.graba__monedero.format(moneda2Q,moneda2))
         conn.commit()
         conn.close()
+    def sustrae_monedero(self,moneda1Q,moneda1):
+        conn = sqlite3.connect(self.FICHERO)
+        cur = conn.cursor()
+        cur.execute(self.retira_monedero.format(moneda1Q,moneda1))
+        conn.commit()
+        conn.close()  
 class Apimanager():
     def __init__(self):
         self.urlc="https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount={}&symbol={}&convert={}&CMC_PRO_API_KEY=f892e6e1-beb2-4c50-8a44-1dfae22119b4"
