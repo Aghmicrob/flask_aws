@@ -2,7 +2,9 @@ import json
 import sqlite3
 
 from config import FICHERO
-from requests import *
+from requests import Session
+import requests
+import json
 
 
 class ConsultaDBException(Exception):
@@ -55,10 +57,21 @@ class Apimanager():
             'accepts' : 'application/json'
         }
     def compara(self,cantidad,moneda1,moneda2):
+        moneda1=str(moneda1)
+        moneda2=str(moneda2)
         url=self.urlc.format(cantidad,moneda1,moneda2)
         session=Session()
         session.headers.update(self.headers)
         respuesta=requests.get(url)
         data_dict=json.loads(respuesta.text)
-        valor=data_dict["data"]["quote"]["EUR"]["price"]
+        valor=data_dict["data"]["quote"][moneda2]["price"]
         return valor
+    def p_api(self):
+        try:
+            cantidad=1
+            moneda1="EUR"
+            moneda2="BTC"
+            self.compara(cantidad,moneda1,moneda2)
+            return True
+        except:
+            return False

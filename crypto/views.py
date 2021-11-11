@@ -33,9 +33,12 @@ def nueva_transaccion():
         return render_template("compra.html",el_formulario=formulario)
     elif formulario.calcular.data:
         if formulario.validate_on_submit():
-            return "bien validado"
+            if api.p_api() ==False:
+                return "error de la api"
+            else:
+                return"bien validado"
+            
 
-        
 
 @app.errorhandler(404)
 def page_not_found(e):
