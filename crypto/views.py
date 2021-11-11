@@ -47,7 +47,16 @@ def nueva_transaccion():
                     formulario.precio_unitario.raw_data=[precio_unidad]
                     return render_template("compra.html",el_formulario=formulario)
     elif formulario.comprar.data:
-        pass
+        if formulario.validate_on_submit():
+            formulario_datos=request.form
+            dbmanager.escribebase(formulario_datos)
+            dbmanager.escribe_monedero(formulario_datos["moneda_final_Q"],formulario_datos["moneda_final"])
+            return redirect(url_for("inicio"))
+
+
+
+
+
 
 
 
