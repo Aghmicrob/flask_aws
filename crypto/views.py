@@ -37,13 +37,19 @@ def nueva_transaccion():
                 return "error de la api"
             else:
                 formulario_datos=request.form
-                cantidad_2=api.compara(formulario_datos["moneda_inicial_Q"],formulario_datos["moneda_inicial"],formulario_datos["moneda_final"])
-                cantidad_1 = float(formulario_datos["moneda_inicial_Q"])
-                precio_unidad= cantidad_1 / cantidad_2
-                formulario.moneda_final_Q.raw_data=[cantidad_2]
-                formulario.precio_unitario.raw_data=[precio_unidad]
-                return render_template("compra.html",el_formulario=formulario)
-            
+                if dbmanager.crypto_monedero(formulario_datos["moneda_inicial"])<float(formulario_datos["moneda_inicial_Q"]) and formulario_datos["moneda_inicial"] !="EUR":
+                    return "no tienes cryptomonedas suficientes"
+                else: 
+                    cantidad_2=api.compara(formulario_datos["moneda_inicial_Q"],formulario_datos["moneda_inicial"],formulario_datos["moneda_final"])
+                    cantidad_1 = float(formulario_datos["moneda_inicial_Q"])
+                    precio_unidad= cantidad_1 / cantidad_2
+                    formulario.moneda_final_Q.raw_data=[cantidad_2]
+                    formulario.precio_unitario.raw_data=[precio_unidad]
+                    return render_template("compra.html",el_formulario=formulario)
+    elif formulario.comprar.data:
+        pass
+
+
 
 
 @app.errorhandler(404)

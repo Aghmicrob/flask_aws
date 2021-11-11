@@ -21,6 +21,11 @@ class Dbmanager():
             FROM registro
             ORDER BY momento;
         """
+        self.cantidad_monedero_1="""
+        SELECT cantidad
+            FROM monedero
+            WHERE cryptomoneda is "{}"
+        """
     def registro(self):
         try: 
             sqlite3.connect(self.FICHERO)
@@ -48,6 +53,16 @@ class Dbmanager():
             return True
         except sqlite3.Error as e:
             raise  ConsultaDBException(str(e))
+    def crypto_monedero(self,cryptomoneda):
+        conn=sqlite3.connect(self.FICHERO)
+        cur=conn.cursor()
+        cur.execute(self.cantidad_monedero_1.format(cryptomoneda))
+        cantidad=cur.fetchall()
+        cantidad=cantidad[0]
+        cantidad=cantidad[0]
+        conn.close()
+        return cantidad
+    
 
 class Apimanager():
     def __init__(self):
