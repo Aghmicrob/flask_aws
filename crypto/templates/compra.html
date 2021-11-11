@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block Enlaces %} <p> <a href="/"> inicio </a> | nueva compra | <a href="status"> inversiones en curso </a> </p> {%endblock%}
+
+{%block contenido_pagina%}
+<h1>transaccion a realizar</h1>
+<form action="/compra" method="post"> 
+    {{ el_formulario.hidden_tag() }}
+    <div class="campo_formulario_fecha">
+        {{el_formulario.momento.label()}}
+        {{el_formulario.momento()}}
+    </div>
+    <div>
+        {{el_formulario.moneda_inicial.label()}}
+        {{el_formulario.moneda_inicial()}}
+    </div>
+    <div>
+        {{ el_formulario.moneda_inicial_Q.label() }}
+        {{ el_formulario.moneda_inicial_Q() }}
+    </div>
+    <div>
+        {{ el_formulario.moneda_final.label() }}
+        {{ el_formulario.moneda_final() }}
+    </div>
+    <div>
+        {{el_formulario.moneda_final_Q.label()}}
+        {{el_formulario.moneda_final_Q()}}
+    </div>
+    <div>
+        {{el_formulario.precio_unitario.label()}}
+        {{el_formulario.precio_unitario()}}
+    </div>
+    {{el_formulario.calcular()}}
+    {{el_formulario.comprar()}}
+</form>
+
+{%endblock%}
+
