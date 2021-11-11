@@ -36,7 +36,13 @@ def nueva_transaccion():
             if api.p_api() ==False:
                 return "error de la api"
             else:
-                return"bien validado"
+                formulario_datos=request.form
+                cantidad_2=api.compara(formulario_datos["moneda_inicial_Q"],formulario_datos["moneda_inicial"],formulario_datos["moneda_final"])
+                cantidad_1 = float(formulario_datos["moneda_inicial_Q"])
+                precio_unidad= cantidad_1 / cantidad_2
+                formulario.moneda_final_Q.raw_data=[cantidad_2]
+                formulario.precio_unitario.raw_data=[precio_unidad]
+                return render_template("compra.html",el_formulario=formulario)
             
 
 
