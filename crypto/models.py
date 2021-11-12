@@ -138,7 +138,7 @@ class Dbmanager():
     def p_status(self):
         try: 
             self.invertido()
-            return False
+            return True
         except:
             return False
     def p_saldo_cartera(self):
