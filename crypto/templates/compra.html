@@ -3,9 +3,11 @@
 
 {%block contenido_pagina%}
 <h1>transaccion a realizar</h1>
+<p class="mensajes error"> {{mensajes}}</p>
+
 <form action="/compra" method="post"> 
     {{ el_formulario.hidden_tag() }}
-    <div class="campo_formulario_fecha">
+    <div class="campos compra">
         {{el_formulario.momento.label()}}
         {{el_formulario.momento()}}
     </div>

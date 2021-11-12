@@ -34,7 +34,11 @@ def nueva_transaccion():
     elif formulario.calcular.data:
         if formulario.validate_on_submit():
             if api.p_api() ==False:
-                return "error de la api"
+                mensaje="error acceso a la api"
+                return render_template("compra.html",el_formulario=formulario,mensajes=mensaje)
+            elif request.form["moneda_inicial"] == request.form["moneda_final"]:
+                mensaje="Por favor elige una moneda de destino distinta a la de origen"
+                return render_template("compra.html",el_formulario=formulario,mensajes=mensaje)
             else:
                 formulario_datos=request.form
                 cantidad_inicio=request.form["moneda_inicial_Q"]
@@ -50,6 +54,9 @@ def nueva_transaccion():
                     formulario.moneda_final_Q.raw_data=[cantidad_2]
                     formulario.precio_unitario.raw_data=[precio_unidad]
                     return render_template("compra.html",el_formulario=formulario)
+        else: 
+            mensaje="error al rellenar formulario, vuelva al inicio y rellenelo otra vez"
+            return render_template("compra.html",el_formulario=formulario,mensajes=mensaje)
     elif formulario.comprar.data:
         if formulario.validate_on_submit():
             formulario_datos=request.form
@@ -58,7 +65,27 @@ def nueva_transaccion():
             if formulario_datos["moneda_inicial"] != "EUR":
                 dbmanager.sustrae_monedero(formulario_datos["moneda_inicial_Q"],formulario_datos["moneda_inicial"])
             return redirect(url_for("inicio"))
-
+        else: 
+            mensaje="error al rellenar formulario, vuelva al inicio y rellenelo otra vez"
+            return render_template("compra.html",el_formulario=formulario,mensajes=mensaje)
+@app.route('/status')
+def status():
+    if dbmanager.p_status() == False or dbmanager.p_saldo_cartera()==False or dbmanager.p_recuperado()==False:
+        mensaje="error de acceso a la base de datos"
+        return render_template("status.html",mensajes=mensaje)
+    else:
+        total_0=dbmanager.invertido()
+        total=total_0[0]
+        valor_actual_cryptos=dbmanager.saldo_cartera()
+        saldo_0=dbmanager.recuperado()
+        saldo_euros_invertidos=saldo_0[0]
+        if total== None or saldo_euros_invertidos==None:
+            total=0
+            valor_inversion=0
+            return render_template("status.html",total=total,valor_actual=valor_inversion)
+        else: 
+            valor_inversion = total + valor_actual_cryptos +  saldo_euros_invertidos
+            return render_template("status.html",total=total,valor_actual=valor_inversion)
 
 
 @app.errorhandler(404)

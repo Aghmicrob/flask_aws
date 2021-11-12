@@ -40,6 +40,22 @@ class Dbmanager():
             SET "cantidad" = cantidad - {}
             WHERE "cryptomoneda" is "{}";
         """
+        self.consulta_inversion="""
+        SELECT SUM ("moneda_inicial_Q")
+            FROM registro
+            WHERE "moneda_inicial" IS "EUR";
+        """
+        self.consulta_recibidos="""
+        SELECT SUM ("moneda_inicial_Q")
+            FROM registro
+            WHERE "moneda_inicial" IS "EUR";
+        """
+        self.consulta_saldo="""
+        SELECT *
+            FROM monedero
+            WHERE "cryptomoneda" IS NOT "EUR" AND "cantidad" IS NOT 0;
+        """
+        self.api=Apimanager()
     def registro(self):
         try: 
             sqlite3.connect(self.FICHERO)
@@ -93,7 +109,50 @@ class Dbmanager():
         cur = conn.cursor()
         cur.execute(self.retira_monedero.format(moneda1Q,moneda1))
         conn.commit()
-        conn.close()  
+        conn.close()
+    def invertido(self):
+        conn = sqlite3.connect(self.FICHERO)
+        cur = conn.cursor()
+        cur.execute(self.consulta_inversion)
+        total=cur.fetchall()
+        final=total[0]
+        conn.close()
+        return final
+    def recuperado(self):
+        conn = sqlite3.connect(self.FICHERO)
+        cur = conn.cursor()
+        cur.execute(self.consulta_recibidos)
+        total=cur.fetchall()
+        final=total[0]
+        conn.close()
+        return final
+    def saldo_cartera(self):
+            conn = sqlite3.connect(self.FICHERO)
+            cur = conn.cursor()
+            cur.execute(self.consulta_saldo)
+            valor=0
+            for monedita in cur.fetchall():
+                valor= valor + self.api.valor(monedita[1],monedita[2])
+            conn.close()
+            return valor
+    def p_status(self):
+        try: 
+            self.invertido()
+            return False
+        except:
+            return False
+    def p_saldo_cartera(self):
+        try: 
+            self.saldo_cartera()
+            return True
+        except:
+            return False
+    def p_recuperado(self):
+        try: 
+            self.recuperado()
+            return True
+        except:
+            return False
 class Apimanager():
     def __init__(self):
         self.urlc="https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount={}&symbol={}&convert={}&CMC_PRO_API_KEY=f892e6e1-beb2-4c50-8a44-1dfae22119b4"
@@ -120,3 +179,11 @@ class Apimanager():
             return True
         except:
             return False
+    def valor(self,cryptomoneda,cantidad):
+        url= self.urlp.format(cantidad,cryptomoneda)
+        session=Session()
+        session.headers.update(self.headers)
+        respuesta=requests.get(url)
+        data_dict=json.loads(respuesta.text)
+        valor=data_dict["data"]["quote"]["EUR"]["price"]
+        return valor
