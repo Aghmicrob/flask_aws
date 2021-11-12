@@ -46,7 +46,8 @@ def nueva_transaccion():
                 cantidad_disponible=dbmanager.crypto_monedero(formulario_datos["moneda_inicial"])
                 cantidad_disponible=float(cantidad_disponible)
                 if cantidad_disponible < cantidad_inicio and formulario_datos["moneda_inicial"] !="EUR":
-                    return "no tienes cryptomonedas suficientes"
+                    mensaje="no tienes cryptomonedas suficientes"
+                    return render_template("compra.html",el_formulario=formulario,mensajes=mensaje)
                 else: 
                     cantidad_2=api.compara(formulario_datos["moneda_inicial_Q"],formulario_datos["moneda_inicial"],formulario_datos["moneda_final"])
                     cantidad_1 = float(formulario_datos["moneda_inicial_Q"])
@@ -69,23 +70,28 @@ def nueva_transaccion():
             mensaje="error al rellenar formulario, vuelva al inicio y rellenelo otra vez"
             return render_template("compra.html",el_formulario=formulario,mensajes=mensaje)
 @app.route('/status')
-def status():
-    if dbmanager.p_status() == False or dbmanager.p_saldo_cartera()==False or dbmanager.p_recuperado()==False:
-        mensaje="error de acceso a la base de datos"
-        return render_template("status.html",mensajes=mensaje)
+def status(): 
+    if dbmanager.p_monedero()==False or dbmanager.p_invertido()==False or dbmanager.p_saldo_cartera()==False or dbmanager.p_recuperado()==False:
+        total=0
+        valor_inversion=0
+        monedero=()
+        mensaje="error comunicacion con base de datos"
+        return render_template("status.html",total=total,valor_actual=valor_inversion,monedero=monedero,mensajes=mensaje)
     else:
         total_0=dbmanager.invertido()
         total=total_0[0]
         valor_actual_cryptos=dbmanager.saldo_cartera()
         saldo_0=dbmanager.recuperado()
         saldo_euros_invertidos=saldo_0[0]
+        miramonedero=dbmanager.monedero()
         if total== None or saldo_euros_invertidos==None:
             total=0
             valor_inversion=0
-            return render_template("status.html",total=total,valor_actual=valor_inversion)
+            mensaje="aun no has comprado nada"
+            return render_template("status.html",total=total,valor_actual=valor_inversion,mensajes=mensaje)
         else: 
             valor_inversion = total + valor_actual_cryptos +  saldo_euros_invertidos
-            return render_template("status.html",total=total,valor_actual=valor_inversion)
+            return render_template("status.html",total=total,valor_actual=valor_inversion,cryptos=miramonedero)
 
 
 @app.errorhandler(404)

@@ -77,6 +77,33 @@ class Dbmanager():
             movimientos.append(d)
         conn.close()
         return movimientos
+    def monedero(self):
+        try: 
+            sqlite3.connect(self.FICHERO)
+        except sqlite3.Error as e:
+            raise  ConsultaDBException(str(e))
+        conn=sqlite3.connect(self.FICHERO)
+        cur=conn.cursor()
+        cur.execute(self.consulta_saldo)
+        keys= []
+        for item in cur.description:
+            keys.append(item[0])
+        Cryptomonedas=[]
+        for registro in cur.fetchall():
+            ix_clave=0
+            d= {}
+            for columna in keys:
+                d[columna] = registro[ix_clave]
+                ix_clave += 1
+            Cryptomonedas.append(d)
+        conn.close()
+        return Cryptomonedas
+    def p_monedero(self):
+        try:
+            self.monedero()
+            return True
+        except:
+            return False
     def p_registro(self):
         try: 
             sqlite3.connect(self.FICHERO)
@@ -118,6 +145,13 @@ class Dbmanager():
         final=total[0]
         conn.close()
         return final
+    def p_invertido(self):
+        try:
+            self.p_invertido()
+            return True
+        except:
+            return False
+            
     def recuperado(self):
         conn = sqlite3.connect(self.FICHERO)
         cur = conn.cursor()

@@ -1,19 +1,30 @@
 {% extends 'base.html' %}
-{% block Enlaces %} <p> <a href="/"> inicio </a> | <a href="compra"> nueva compra </a> |inversiones en curso </p> {%endblock%}
+{% block Enlaces %} <p> <a href="/"> inicio </a> | <a href="compra"> nueva compra </a> |Inversion actual y monedero </p> {%endblock%}
 
 {%block contenido_pagina%}
 <p class="mensajes error"> {{mensajes}}</p>
 <H1> estado de tu inversion </H1>
 <div>
     <tr>
-        <td> total invertido</td>
+        <td> total invertido: </td>
         <td class="casilla"> {{total}} </td>
     </tr>
     <tr>
-        <td>Valor actual de tu inversion</td>
+        <td>Valor actual de tu inversion: </td>
         <td class="casilla">{{valor_actual}} </td>
     </tr>
 </div>
-
 <h2> monedero</h2>
+<table>
+    <tr>
+        <th> Cryptomoneda</th>
+        <th> Cantidad disponible</th>
+    </tr>
+    {%for crypto in cryptos%}
+        <tr> 
+            <td>{{crypto.cryptomoneda}}</td>
+            <td>{{crypto.cantidad}}</td>
+        </tr>
+    {%endfor%}
+</table>
 {%endblock%}
