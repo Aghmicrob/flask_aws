@@ -6,8 +6,8 @@
     {%if items|length == 0 %}
         <h1> no tienes transacciones pendientes, COMPRA, COMPRA COMPRA </h1>
     {%else%}
-        <table class="tablas">
-            <tr class="Cabeceras">
+        <table>
+            <tr>
                 <th>momento</th>
                 <th>moneda_inicial</th>
                 <th>cantidad_moneda_inicial</th>
@@ -17,12 +17,12 @@
             </tr>
             {% for item in items%}
                 <tr>
-                    <td class="casillas">{{item.momento}}</td>
-                    <td class="casillas">{{item.moneda_inicial}}</td>
-                    <td class="casillas">{{item.moneda_inicial_Q}}</td>
-                    <td class="casillas" >{{item.moneda_final}}</td>
-                    <td class="casillas">{{item.moneda_final_Q}}</td>
-                    <td class="casillas">{{item.precio_unitario}}</td>
+                    <td>{{item.momento}}</td>
+                    <td>{{item.moneda_inicial}}</td>
+                    <td>{{item.moneda_inicial_Q}}</td>
+                    <td>{{item.moneda_final}}</td>
+                    <td>{{item.moneda_final_Q}}</td>
+                    <td>{{item.precio_unitario}}</td>
                 </tr>
             {%endfor%}
         </table>
