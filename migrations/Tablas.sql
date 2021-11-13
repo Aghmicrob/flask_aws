@@ -1,6 +1,4 @@
-
-
-CREATE TABLE "monedero" IF NOT EXISTS(
+CREATE TABLE "monedero" ( 
 	"id"	INTEGER NOT NULL,
 	"cryptomoneda"	TEXT NOT NULL,
 	"cantidad"	INTEGER NOT NULL,
@@ -8,7 +6,7 @@ CREATE TABLE "monedero" IF NOT EXISTS(
 )
 
 
-CREATE TABLE "registro" IF NOT EXISTS (
+CREATE TABLE "registro" (
 	"id"	INTEGER,
 	"momento"	TEXT NOT NULL,
 	"moneda_inicial"	TEXT NOT NULL,
