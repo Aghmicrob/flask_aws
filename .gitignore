@@ -1,11 +1,13 @@
 venv
 __pycache__
 config.py  
-.env
-data 
-probatinas.py
-readme2.md
-probatinas2.py
+migrations
+config_template.py
+.env_template
+
+
+
+
 
 
 
