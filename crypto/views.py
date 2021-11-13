@@ -33,8 +33,8 @@ def nueva_transaccion():
         return render_template("compra.html",el_formulario=formulario)
     elif formulario.calcular.data:
         if formulario.validate_on_submit():
-            if api.p_api() ==False:
-                mensaje="error acceso a la api"
+            if api.p_api() ==False or dbmanager.p_crypto_monedero()==False:
+                mensaje="error conexion api/base de datos"
                 return render_template("compra.html",el_formulario=formulario,mensajes=mensaje)
             elif request.form["moneda_inicial"] == request.form["moneda_final"]:
                 mensaje="Por favor elige una moneda de destino distinta a la de origen"
@@ -61,7 +61,10 @@ def nueva_transaccion():
     elif formulario.comprar.data:
         if formulario.validate_on_submit():
             formulario_datos=request.form
-            if formulario_datos["moneda_final_Q"] == "0":
+            if dbmanager.p_escribebase(formulario_datos)==False or dbmanager.p_sumamonedero()== False:
+                mensaje="ha habido un problema con el acceso a la base de datos"
+                return render_template("compra.html",el_formulario=formulario,mensajes=mensaje)
+            elif formulario_datos["moneda_final_Q"] == "0":
                 mensaje="no se olvide de pulsar calcular antes de pulsar comprar"
                 return render_template("compra.html",el_formulario=formulario,mensajes=mensaje)
             else:

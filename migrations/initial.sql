@@ -5,7 +5,6 @@ CREATE TABLE "monedero" (
 	PRIMARY KEY("id")
 )
 
-
 CREATE TABLE "registro" (
 	"id"	INTEGER,
 	"momento"	TEXT NOT NULL,

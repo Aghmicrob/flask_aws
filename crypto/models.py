@@ -74,10 +74,6 @@ class Dbmanager():
         conn.close()
         return movimientos
     def monedero(self):
-        try: 
-            sqlite3.connect(self.FICHERO)
-        except sqlite3.Error as e:
-            raise  ConsultaDBException(str(e))
         conn=sqlite3.connect(self.FICHERO)
         cur=conn.cursor()
         cur.execute(self.consulta_saldo)
@@ -115,18 +111,44 @@ class Dbmanager():
         cantidad=cantidad[0]
         conn.close()
         return cantidad
+    def p_crypto_monedero(self):
+        crypto="BTC"
+        try: 
+            self.crypto_monedero(crypto)
+            return True
+        except:
+            return False
+            
     def escribebase(self, params):
         conn = sqlite3.connect(self.FICHERO)
         cur = conn.cursor()
         cur.execute(self.inserta,params)
         conn.commit()
         conn.close()
+    def excribebase_mentira(self,params):
+        conn = sqlite3.connect(self.FICHERO)
+        cur = conn.cursor()
+        cur.execute(self.inserta,params)
+        conn.close()
+    def p_escribebase(self, params):
+        try:
+            self.excribebase_mentira(params)
+            return True
+        except:
+            return False 
+
     def suma_monedero(self,moneda2Q,moneda2):
         conn = sqlite3.connect(self.FICHERO)
         cur = conn.cursor()
         cur.execute(self.graba__monedero.format(moneda2Q,moneda2))
         conn.commit()
         conn.close()
+    def p_sumamonedero(self):
+        try:
+            self.suma_monedero(0,"BTC")
+            return True
+        except:
+            return False
     def sustrae_monedero(self,moneda1Q,moneda1):
         conn = sqlite3.connect(self.FICHERO)
         cur = conn.cursor()
@@ -147,7 +169,6 @@ class Dbmanager():
             return True
         except:
             return False
-            
     def recuperado(self):
         conn = sqlite3.connect(self.FICHERO)
         cur = conn.cursor()
