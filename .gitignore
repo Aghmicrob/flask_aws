@@ -1,6 +1,5 @@
 venv
 __pycache__
-config.py  
 migrations
 config_template.py
 .env_template
