@@ -4,6 +4,7 @@
     --negro: #000000; 
     --blanco: #fafafa;
     --separacion-defecto: 8px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 *,*::before,*::after {
@@ -14,13 +15,26 @@
 header *, footer * {
     
     color: var(--blanco);
-    font-size: 1.5rem;
     padding: 1rem;
 }
 header{
     position: relative;
+    font-size: 3rem;
     top: 0rem;
-    background-color:var(--color-primario)
+    background-color:var(--color-primario);
+    padding: 0rem
+}
+.imagenesheader{
+    block-size: 9rem;
+    position: relative;
+    padding: 0rem;
+    left: 5rem;
+}
+.imagenesbody{
+    position: relative;
+    top: -10.6rem;
+    left: 80rem;
+    block-size: 24rem;
 }
 
 footer {
@@ -32,29 +46,68 @@ footer {
 }
 
 body{
-    background-position: 100%;
+    background-color:beige
 }
-
-
 
 nav{
     background-color: darkseagreen;
     font-size: 1rem;
     padding: 0.5rem;
 }
-
-table,tr{
-    width: 60%;
+.tabla1{
+    background-color: white;
+    width: 100%;
     font-size: 1.2rem;
     border: 3px solid black;
     border-collapse: collapse;
+}
+.tabla2{
+    background-color: white;
+    width: 50%;
+    font-size: 1.2rem;
+}
+
+tr,th,td{
+    border: 2px solid black;
 }
 
 table{
     text-align: center;
 }
 
+.status1{
+    padding: 0rem;
+    position: relative;
 
+}
+.status2{
+    position: relative;
+    top: -3rem;
+    left: 60rem;
+}
+
+.inversion{
+    font-size: 2rem ;
+}
+.statush{
+    border-color: solid darkslategray;
+    font-size: 4rem;
+}
+.formulario{
+    font-size: 2rem;
+    display: block;
+    position: relative;
+    right: -15rem;
+    
+}
+.formularioh{
+    font-size: 5rem;
+    display: block;
+    position: relative;
+    right: -20rem;
+    font-style: bold;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
 .error {
     background-color: #ffaaaa;
     color: darkred;

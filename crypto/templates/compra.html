@@ -2,43 +2,44 @@
 {% block Enlaces %} <p> <a href="/"> inicio </a> | nueva compra | <a href="status"> Inversion actual y monedero </a> </p> {%endblock%}
 
 {%block contenido_pagina%}
-<h1>transaccion a realizar</h1>
-<p class="error"> {{mensajes}}</p>
+<div class="formulario" >
+    <h1 class="formularioh">transaccion a realizar</h1>
+    <p class="error"> {{mensajes}}</p>
 
-<form action="/compra" method="post"> 
-    {{ el_formulario.hidden_tag() }}
-    <div>
-        {{el_formulario.momento.label()}}
-        {{el_formulario.momento()}}
-    </div>
-    <div>
-        {{el_formulario.moneda_inicial.label()}}
-        {{el_formulario.moneda_inicial()}}
-    </div>
-    <div>
-        {{ el_formulario.moneda_inicial_Q.label() }}
-        {{ el_formulario.moneda_inicial_Q() }}
-    </div>
-    <div>
-        {{ el_formulario.moneda_final.label() }}
-        {{ el_formulario.moneda_final() }}
-    </div>
-    <div>
-        {{el_formulario.moneda_final_Q.label()}}
-        {{el_formulario.moneda_final_Q()}}
-    </div>
-    <div>
-        {{el_formulario.precio_unitario.label()}}
-        {{el_formulario.precio_unitario()}}
-    </div>
+    <form action="/compra" method="post"> 
+        {{ el_formulario.hidden_tag() }}
+        <div>
+            {{el_formulario.momento.label()}}
+            {{el_formulario.momento()}}
+        </div>
+        <div>
+            {{el_formulario.moneda_inicial.label()}}
+            {{el_formulario.moneda_inicial()}}
+        </div>
+        <div>
+            {{ el_formulario.moneda_inicial_Q.label() }}
+            {{ el_formulario.moneda_inicial_Q() }}
+        </div>
+        <div>
+            {{ el_formulario.moneda_final.label() }}
+            {{ el_formulario.moneda_final() }}
+        </div>
+        <div>
+            {{el_formulario.moneda_final_Q.label()}}
+            {{el_formulario.moneda_final_Q()}}
+        </div>
+        <div>
+            {{el_formulario.precio_unitario.label()}}
+            {{el_formulario.precio_unitario()}}
+        </div>
 
-    <div Class="boton">
-        {{el_formulario.calcular()}}
-        {{el_formulario.comprar()}}
-    </div>
-    
-    
-</form>
+        <div Class="boton">
+            {{el_formulario.calcular()}}
+            {{el_formulario.comprar()}}
+        </div>
+    </form>
+</div>
+
 
 {%endblock%}
 

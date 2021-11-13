@@ -3,28 +3,28 @@
 
 {%block contenido_pagina%}
 <p class="error"> {{mensajes}}</p>
-<h1> estado de tu inversion </h1>
-<div>
-    <tr>
-        <td> total invertido: </td>
-        <td> {{total}} </td>
-    </tr>
-    <tr>
-        <td>Valor actual de tu inversion: </td>
-        <td >{{valor_actual}} </td>
-    </tr>
+
+<div class="status1">
+    <h1 class= statush> estado de tu inversion </h1>
+    <div class="inversion">
+        <p> total invertido:  {{total}} € <p>
+        <p> Valor actual de tu inversion: {{valor_actual}} € <p>
+    <div>
 </div>
-<h2> monedero</h2>
-<table>
-    <tr>
-        <th> Cryptomoneda</th>
-        <th> Cantidad disponible</th>
-    </tr>
-    {%for crypto in cryptos%}
-        <tr> 
-            <td>{{crypto.cryptomoneda}}</td>
-            <td>{{crypto.cantidad}}</td>
+<div class="status2">
+    <h2 class= statush> monedero</h2>
+    <table class="tabla2">
+        <tr>
+            <th> Cryptomoneda</th>
+            <th> Cantidad disponible</th>
         </tr>
-    {%endfor%}
-</table>
+        {%for crypto in cryptos%}
+            <tr> 
+                <td>{{crypto.cryptomoneda}}</td>
+                <td>{{crypto.cantidad}}</td>
+            </tr>
+        {%endfor%}
+    </table>
+</div>
+
 {%endblock%}
