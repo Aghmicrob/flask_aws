@@ -61,11 +61,15 @@ def nueva_transaccion():
     elif formulario.comprar.data:
         if formulario.validate_on_submit():
             formulario_datos=request.form
-            dbmanager.escribebase(formulario_datos)
-            dbmanager.suma_monedero(formulario_datos["moneda_final_Q"],formulario_datos["moneda_final"])
-            if formulario_datos["moneda_inicial"] != "EUR":
-                dbmanager.sustrae_monedero(formulario_datos["moneda_inicial_Q"],formulario_datos["moneda_inicial"])
-            return redirect(url_for("inicio"))
+            if formulario_datos["moneda_final_Q"] == "0":
+                mensaje="no se olvide de pulsar calcular antes de pulsar comprar"
+                return render_template("compra.html",el_formulario=formulario,mensajes=mensaje)
+            else:
+                dbmanager.escribebase(formulario_datos)
+                dbmanager.suma_monedero(formulario_datos["moneda_final_Q"],formulario_datos["moneda_final"])
+                if formulario_datos["moneda_inicial"] != "EUR":
+                    dbmanager.sustrae_monedero(formulario_datos["moneda_inicial_Q"],formulario_datos["moneda_inicial"])
+                return redirect(url_for("inicio"))
         else: 
             mensaje="error al rellenar formulario, vuelva al inicio y rellenelo otra vez"
             return render_template("compra.html",el_formulario=formulario,mensajes=mensaje)

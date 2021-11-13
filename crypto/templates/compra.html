@@ -3,11 +3,11 @@
 
 {%block contenido_pagina%}
 <h1>transaccion a realizar</h1>
-<p class="mensajes error"> {{mensajes}}</p>
+<p class="error"> {{mensajes}}</p>
 
 <form action="/compra" method="post"> 
     {{ el_formulario.hidden_tag() }}
-    <div class="campos compra">
+    <div>
         {{el_formulario.momento.label()}}
         {{el_formulario.momento()}}
     </div>
@@ -31,8 +31,13 @@
         {{el_formulario.precio_unitario.label()}}
         {{el_formulario.precio_unitario()}}
     </div>
-    {{el_formulario.calcular()}}
-    {{el_formulario.comprar()}}
+
+    <div Class="boton">
+        {{el_formulario.calcular()}}
+        {{el_formulario.comprar()}}
+    </div>
+    
+    
 </form>
 
 {%endblock%}
