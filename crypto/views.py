@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request
 from flask.helpers import url_for
 from flask_wtf import *
-from werkzeug.utils import redirect
+from werkzeug.utils import bind_arguments, redirect
 from wtforms import *
+from wtforms.widgets.core import SubmitInput
 
 from crypto import app
 from crypto.forms import Formulario
@@ -17,14 +18,13 @@ dbmanager=Dbmanager()
 api=Apimanager()
 @app.route("/")
 def inicio():
-    try: 
+    if dbmanager.p_registro() == False:
+        movimientos=()
+        e="error acceso a base de datos"
+        return render_template("index.html", items=movimientos,error=e)
+    else: 
         movimientos=dbmanager.registro()
         return render_template("index.html", items=movimientos)
-    except:
-        movimientos=()
-        e="error accseo a base de datos"
-        return render_template("index.html", items=movimientos,error=e)
-
 
 @app.route('/compra', methods=["GET", "POST"])
 def nueva_transaccion():
@@ -75,7 +75,7 @@ def nueva_transaccion():
             return render_template("compra.html",el_formulario=formulario,mensajes=mensaje)
 @app.route('/status')
 def status(): 
-    if dbmanager.p_monedero()==False or dbmanager.p_invertido()==False or dbmanager.p_saldo_cartera()==False or dbmanager.p_recuperado()==False:
+    if dbmanager.p_monedero()==False or dbmanager.p_invertido()==False or dbmanager.p_saldo_cartera()==False or dbmanager.p_recuperado()==False or api.p_valor()==False:
         total=0
         valor_inversion=0
         monedero=()
@@ -88,10 +88,10 @@ def status():
         saldo_0=dbmanager.recuperado()
         saldo_euros_invertidos=saldo_0[0]
         miramonedero=dbmanager.monedero()
-        if total== None or saldo_euros_invertidos==None:
+        if total== None or saldo_euros_invertidos==None or valor_actual_cryptos ==0:
             total=0
             valor_inversion=0
-            mensaje="aun no has comprado nada"
+            mensaje="aun no has comprado nada, o has vendido todad las cryptos que tenias, vuelve a comprar"
             return render_template("status.html",total=total,valor_actual=valor_inversion,mensajes=mensaje)
         else: 
             valor_inversion = total + valor_actual_cryptos +  saldo_euros_invertidos
@@ -99,11 +99,11 @@ def status():
 
 
 @app.errorhandler(404)
-def page_not_found(e):
-    return redirect(url_for('inicio')), 404
-
+def page_not_found():
+    return render_template("error.html")
+    
 
 @app.errorhandler(500)
-def server_error(e):
-    return redirect(url_for('inicio')), 500
+def server_error():
+    return render_template("error.html")
 

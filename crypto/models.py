@@ -57,10 +57,6 @@ class Dbmanager():
         """
         self.api=Apimanager()
     def registro(self):
-        try: 
-            sqlite3.connect(self.FICHERO)
-        except sqlite3.Error as e:
-            raise  ConsultaDBException(str(e))
         conn=sqlite3.connect(self.FICHERO)
         cur=conn.cursor()
         cur.execute(self.registros)
@@ -106,10 +102,10 @@ class Dbmanager():
             return False
     def p_registro(self):
         try: 
-            sqlite3.connect(self.FICHERO)
+            self.registro()
             return True
-        except sqlite3.Error as e:
-            raise  ConsultaDBException(str(e))
+        except:
+            return False
     def crypto_monedero(self,cryptomoneda):
         conn=sqlite3.connect(self.FICHERO)
         cur=conn.cursor()
@@ -221,3 +217,9 @@ class Apimanager():
         data_dict=json.loads(respuesta.text)
         valor=data_dict["data"]["quote"]["EUR"]["price"]
         return valor
+    def p_valor(self):
+        try:
+            self.valor("BTC",1)
+            return True
+        except: 
+            return False
